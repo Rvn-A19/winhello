@@ -3,52 +3,17 @@
 */
 
 
+#include "pathjoin.h"
+
+
 #include <iostream>
-#include <string>
+
+
 #include <memory>
 
 
 #include <Windows.h>
 #include <sddl.h>
-
-
-const DWORD kBufferSize = 512;
-
-
-class PathJoin {
-public:
-  PathJoin(std::initializer_list<const std::wstring> components);
-  std::wstring GetResultPath();
-
-private:
-  std::wstring result_path;
-};
-
-
-bool EndsWith(std::wstring arg, wchar_t sym) {
-  return arg[arg.size() - 1] == sym;
-}
-
-
-PathJoin::PathJoin(std::initializer_list<const std::wstring> components) {
-  auto it = components.begin() + 1;
-  result_path = *components.begin();
-  for (; it + 1 != components.end(); it ++) {
-    if (!EndsWith(result_path, L'\\')) {
-      result_path += L"\\";
-    }
-    result_path += *it;
-  }
-  if (!EndsWith(result_path, L'\\')) {
-    result_path += L"\\";
-  }
-  result_path += *it;
-}
-
-
-std::wstring PathJoin::GetResultPath() {
-  return result_path;
-}
 
 
 std::wstring GetNameBySid(PSID target_sid) {
@@ -86,11 +51,11 @@ void ShowCurrentProcessSid() {
   LPWSTR string_sid;
 
   if (!ConvertSidToStringSidW(token_info->User.Sid, &string_sid)) {
-    fprintf(stderr, "Convert to string sid error (%i)\n", GetLastError());
+    fwprintf(stderr, L"Convert to string sid error (%i)\n", GetLastError());
     return;
   }
 
-  std::wcout << "Process user sid is " << string_sid << "(" << GetNameBySid(token_info->User.Sid) << ")" << std::endl;
+  std::wcout << L"Process user sid is " << string_sid << L"(" << GetNameBySid(token_info->User.Sid) << L")" << std::endl;
 
   LocalFree(string_sid);
 
