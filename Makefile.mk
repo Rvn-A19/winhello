@@ -7,11 +7,16 @@ COMPILE = /c
 
 all: winhello.exe
 
-winhello.exe: pathjoin.obj
-    $(CC) $(EXTFLAGS) $(CXXFLAGS) winhello.cc pathjoin.obj $(LIBS)
+winhello.exe: pathjoin.obj userinformation.obj
+    $(CC) $(EXTFLAGS) $(CXXFLAGS) winhello.cc pathjoin.obj userinformation.obj $(LIBS)
 
 pathjoin.obj:
     $(CC) $(EXTFLAGS) $(CXXFLAGS) $(COMPILE) pathjoin.cc
+
+
+userinformation.obj:
+    $(CC) $(EXTFLAGS) $(CXXFLAGS) $(COMPILE) userinformation.cc
+
 
 rebuild: clean all
 
